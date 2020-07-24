@@ -3,7 +3,8 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet");
-const { NODE_ENV } = require('./config')
+const { NODE_ENV } = require('./config');
+const JournalRouter = require("./journal/journal-router");
 const app = express();
 
 const morganOption = NODE_ENV === "production" ? "tiny" : "common";
@@ -11,10 +12,12 @@ const morganOption = NODE_ENV === "production" ? "tiny" : "common";
 app.use(morgan(morganOption));
 app.use(helmet());
 app.use(cors());
-
+app.use("/journals", JournalRouter)
 app.get("/", (req, res) => {
   res.send("Hello, world!");
 });
+
+app.set('db', 'hello wold')
 
 app.use((error, req, res, next) => {//eslint-disable-line no-unused-vars
   let message;
